@@ -1,0 +1,23 @@
+{
+  "cSpell.words": [
+    "adicao",
+    "Contador",
+    "diminuir",
+    "estilo",
+    "mexer",
+    "moveu",
+    "somar"
+  ],
+  "cSpell.diagnosticLevel": "Hint",
+  "cSpell.ignoreRegExpList": [".*"],
+
+  "workbench.colorCustomizations": {
+    "editor.background": "#000000",
+    "sideBar.background": "#000000",
+    "sideBarTitle.foreground": "#6b6e6d",
+    "sideBarSectionHeader.foreground": "#c2c5c3",
+    "activityBar.activeBackground": "#075e2b",
+    "activityBar.background": "#075e2b",
+    "statusBar.background": "#075e2b"
+  }
+}
