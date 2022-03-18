@@ -10,7 +10,7 @@ export default class QuestaoModel {
     id: number,
     enunciado: string,
     respostas: RespostaModel[],
-    acertou: boolean
+    acertou = false
   ) {
     this.#id = id;
     this.#enunciado = enunciado;
@@ -39,5 +39,14 @@ export default class QuestaoModel {
       if (resposta.revelada) return true;
     }
     return false;
+  }
+
+  paraObjeto() {
+    return {
+      id: this.#id,
+      enunciado: this.#enunciado,
+      respostas: this.#respostas.map((resp) => resp.paraObjeto()),
+      acertou: this.#acertou,
+    };
   }
 }
