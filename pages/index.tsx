@@ -7,7 +7,7 @@ export default function Home() {
     RespostaModel.errada("Green"),
     RespostaModel.errada("Red"),
     RespostaModel.errada("black"),
-    RespostaModel.certa("Blue"),
+    RespostaModel.certa("Grêmio"),
   ]);
 
   return (
