@@ -35,6 +35,10 @@ export default class QuestaoModel {
     return this.#acertou;
   }
 
+  get naoRespondida() {
+    return !this.respondida;
+  }
+
   get respondida() {
     for (let resposta of this.#respostas) {
       if (resposta.revelada) return true;
@@ -47,7 +51,7 @@ export default class QuestaoModel {
     const respostas = this.#respostas.map((resposta, i) => {
       const respostaSelecionada = indice === i;
       const deveRevelar = respostaSelecionada || resposta.certa;
-      return respostaSelecionada ? resposta.revelar() : resposta;
+      return deveRevelar ? resposta.revelar() : resposta;
     });
     return new QuestaoModel(this.#id, this.#enunciado, respostas, acertou);
   }
