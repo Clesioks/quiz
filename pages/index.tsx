@@ -1,6 +1,5 @@
-import { useState } from "react";
-import Botao from "../components/Botao";
-import Questao from "../components/Questao";
+import { useEffect, useState } from "react";
+import Questionario from "../components/Questionario";
 import QuestaoModel from "../model/questao";
 import RespostaModel from "../model/resposta";
 
@@ -11,17 +10,35 @@ const questaoMock = new QuestaoModel(1, "What's color of ocean?", [
   RespostaModel.certa("Grêmio"),
 ]);
 
-export default function Home() {
-  const [questao, setQuestao] = useState(questaoMock);
+const BASE_RUL = "http//localhost:3000/api";
 
-  function respostaFornecida(indice: number) {
-    setQuestao(questao.responderCom(indice));
+export default function Home() {
+  const [idsDasQuestoes, setIdsDasQuestoes] = useState<number[]>([]);
+  const [questao, setQuestao] = useState<QuestaoModel>(questaoMock);
+
+  async function carregarIdsDasQuestoes() {
+    const resp = await fetch(`${BASE_RUL}/questionario`);
+    const idsDasQuestoes = await resp.json();
+
+    setIdsDasQuestoes(idsDasQuestoes);
   }
-  function tempoEsgotado() {
-    if (!questao.naoRespondida) {
-      setQuestao(questao.responderCom(-1));
-    }
+  async function carregarQuestoes(idQuestao: number) {
+    const resp = await fetch(`${BASE_RUL}/questoes/${idQuestao}`);
+    const json = await resp.json();
+    console.log(json);
   }
+
+  useEffect(() => {
+    carregarIdsDasQuestoes();
+  }, []);
+
+  useEffect(() => {
+    idsDasQuestoes.length > 0 && carregarQuestoes(idsDasQuestoes[0]);
+  }, [idsDasQuestoes]);
+
+  function questaoRespondida(questao: QuestaoModel) {}
+
+  function irPraProximoPasso() {}
 
   return (
     <div
@@ -33,13 +50,12 @@ export default function Home() {
         flexDirection: "column",
       }}
     >
-      <Questao
-        valor={questao}
-        tempoPraResposta={5}
-        respostaFornecida={respostaFornecida}
-        tempoEsgotado={tempoEsgotado}
+      <Questionario
+        questao={questao}
+        ultima={true}
+        questaoRespondida={questaoRespondida}
+        irPraProximoPasso={irPraProximoPasso}
       />
-      <Botao texto="Próxima" href="/resultado" />
     </div>
   );
 }
