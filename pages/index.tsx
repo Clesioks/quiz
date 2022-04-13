@@ -10,22 +10,24 @@ const questaoMock = new QuestaoModel(1, "What's color of ocean?", [
   RespostaModel.certa("Grêmio"),
 ]);
 
-const BASE_RUL = "http//localhost:3000/api";
+const BASE_URL = "http://localhost:3000/api";
 
 export default function Home() {
   const [idsDasQuestoes, setIdsDasQuestoes] = useState<number[]>([]);
   const [questao, setQuestao] = useState<QuestaoModel>(questaoMock);
 
   async function carregarIdsDasQuestoes() {
-    const resp = await fetch(`${BASE_RUL}/questionario`);
+    const resp = await fetch(`${BASE_URL}/questionario`);
     const idsDasQuestoes = await resp.json();
-
+    console.log(idsDasQuestoes);
     setIdsDasQuestoes(idsDasQuestoes);
   }
+
   async function carregarQuestoes(idQuestao: number) {
-    const resp = await fetch(`${BASE_RUL}/questoes/${idQuestao}`);
+    const resp = await fetch(`${BASE_URL}/questoes/${idQuestao}`);
     const json = await resp.json();
-    console.log(json);
+    const novaQuestao = QuestaoModel.criarUsandoObjeto(json);
+    setQuestao(novaQuestao);
   }
 
   useEffect(() => {
@@ -41,21 +43,11 @@ export default function Home() {
   function irPraProximoPasso() {}
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        flexDirection: "column",
-      }}
-    >
-      <Questionario
-        questao={questao}
-        ultima={true}
-        questaoRespondida={questaoRespondida}
-        irPraProximoPasso={irPraProximoPasso}
-      />
-    </div>
+    <Questionario
+      questao={questao}
+      ultima={true}
+      questaoRespondida={questaoRespondida}
+      irPraProximoPasso={irPraProximoPasso}
+    />
   );
 }
